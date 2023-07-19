@@ -1,0 +1,271 @@
+---
+pagetitle: "R and Python basics"
+author: "Dainius Masiliūnas"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  rmdformats::html_clean:
+    title: "R and Python basics"
+    highlight: zenburn
+---
+
+```{css, echo=FALSE}
+@import url("https://netdna.bootstrapcdn.com/bootswatch/3.0.0/simplex/bootstrap.min.css");
+.main-container {max-width: none;}
+pre {color: inherit; background-color: inherit;}
+code[class^="sourceCode"]::before {
+  content: attr(class);
+  display: block;
+  text-align: right;
+  font-size: 70%;
+}
+code[class^="sourceCode r"]::before { content: "R Source";}
+code[class^="sourceCode python"]::before { content: "Python Source"; }
+code[class^="sourceCode bash"]::before { content: "Bash Source"; }
+```
+
+<font size="6">[WUR Geoscripting](https://geoscripting-wur.github.io/)</font> <img src="https://www.wur.nl/upload/854757ab-168f-46d7-b415-f8b501eebaa5_WUR_RGB_standard_2021-site.svg" alt="WUR logo" style="height: 35px; margin:inherit;"/>
+
+# R and Python basics
+
+Throughout the course we will be learning R and Python. Both are programming languages, and both can be used for handling geospatial data. So what is the difference between them? Why would you choose one over another? And how does equivalent code look like in each language? We will go over these questions in this tutorial.
+
+## Learning objectives of the day
+
+In this tutorial, you will learn to:
+
+* describe the differences between R and Python;
+* apply R and Python for basic handling of data types in each language;
+* create new object classes and use inheritance.
+
+## What are R and Python?
+
+If you ask an average person what Python is, they will tell you that it's a type of snake. If you ask an average person what R is, they will tell you that it's a letter of the alphabet. Today you will learn beyond that: the details of the programming languages of R and Python!
+
+Both R and Python programming languages were created at around the same time: Python was created in 1991, and R in 1993. However, R actually has a much longer history, because it is an extension of the S programming language that was created all the way back in 1976 in Bell Labs. R was created specifically as a statistical package, similar to SPSS or Stata. However, it has since evolved into a general-purpose programming language. Due to its focus on statistics, R is mainly used in academia (schools and universities).
+
+Python was created as a general-purpose programming language. It was designed with readability in mind, and it has become the most popular programming language in the world. Python is therefore widely used in the industry, such as startups and large corporations. Python is especially strong in the field of deep learning, since packages such as Google's TensorFlow are implemented primarily in Python.
+
+In terms of spatial data handling, both R and Python can perform the same tasks. Both are relatively easy to integrate with other software as well, which allows extending the capabilities of each language. For example, the open source GIS software QGIS, including all its plugins, are written in Python. R scripts can be run directly from the QGIS inteface as processing tools. R has a package `reticulate` that can run Python scripts, and Python has a package `rpy2` that can run R scripts.
+
+Both R and Python have extremely active communities maintaining a wealth of packages. The package ecosystems differ significantly between the two langauges, however. Python packages are hosted on PyPI, the Python Package Index, which is a very easily accessible place where anyone can upload the Python packages they create. There is minimal oversight over them and the package authors are free to do with their packages what they please. The R package repository is called CRAN, the Comprehensive R Archive Network. CRAN is curated: any package submitted to CRAN goes through a review process, and has to pass a suite of tests before it gets accepted. This ensures that, among other things, every argument in every function in every package is documented, and that each package is compatible with all the other packages in CRAN. The result is that it is much more difficult to publish R packages, but the quality of R packages is generally much higher than Python packages. It also means that package management in R is very easy, as no conflicts can happen between packages. Packages are also more inclined to depend on other packages, as it is more certain that their dependencies will stay maintained. In contrast, Python has a lot more packages, but they are often poorly documented and often do not interoperate with other packages as well. Package management is a big issue in Python, as many packages work only with certain versions of other packages.
+
+In practice, this means that while all geospatial data handling tasks can be done in R or Python, R is better integrated for this. In this course you will learn about the packages `terra` for raster handling and `sf` for vector handling, which are both integrated with each other and offer a full suite of processing tools, and all of the other packages that use vectors or rasters in R also make use of `sf` and `terra` package objects. In Python, raster reading is done using the `rasterio` package, but processing needs to be done using other packages, many of which do not support `rasterio` objects. Vector handling is done in `geopandas`, which has spatial processing tools, but once again they are not always integrated with raster object support. So rasters often need to be converted into number matrices for processing, then converted back into raster objects, by the user.
+
+Both R and Python can plot geospatial data and have several frameworks and packages for that. R has a built-in `plot()` function that can visualise any type of data quickly, and all pacakges make use of it. For more advanced custom visualisation, `ggplot2` can be used. In Python, the standard plotting package is `matplotlib`. Spatial packages often implement their own plotting functions for their own objects, therefore putting multiple objects into one plot can often be more challenging than in R.
+
+Ultimately, the choice of language to use is often decided by interoperability needs (e.g. if you work in a company that uses Python, you will be expected to also write in Python, so that your script can be used in a pipeline) and personal preference.
+
+## Running Python and R from Bash
+
+Both the `R` and the `python` interpreters can be run from Bash. Here is an example you can use to execute a script written in either language:
+```{bash}
+# Create a script file "script" (no extension)
+echo "print('Hello world!')" > script
+# Run the script with R
+Rscript ./script
+# Run the script with Python
+python3 ./script
+```
+
+This allows you to run script files even without having any graphical user interface installed or running, which is the fastest way to run any script from top to bottom. You can use this method to try out the code examples below, or use your favourite integrated development environment (IDE), such as RStudio or RKWard for R and Spyder or Jupyter for Python.
+
+## Data types
+
+Both Python and R provide a set of primitive data types. The ones they have in common are integers, floating-point numbers, logical boolean values, character strings, associative arrays (dictionaries) and lists. To find out the type of a variable, use `type()` in Python and `class()` in R.
+
+A whole number is called an integer, and a number with decimals (real number) is called a float (floating point number). In Python, if you enter a number without decimal points, it will be an integer, otherwise it will be a float.
+
+```{python}
+type(10)
+type(10.1)
+type(10.)
+type(int(10.))
+```
+
+In R, any number will be a float (called "numeric") by default, and integers are obtained by explicitly casting to an integer using `as.integer()`:
+
+```{r}
+class(10)
+class(10.1)
+class(as.integer(10))
+```
+
+Boolean, or logical, types can only have two values: true or false. When cast to an integer, true is represented by 1 and false is represented by 0. Both R and Python are case-sensitive, and use different cases to represent booleans (`True` in Python and `TRUE` in R).
+
+```{python}
+type(True)
+type(True + 2)
+True + 2
+```
+
+```{r}
+class(TRUE)
+class(TRUE + 2)
+TRUE + 2
+```
+
+Character strings are letters and words. They can also include numbers, but the numbers do not have a mathematical meaning, and therefore you cannot do arithmetics on strings. Strings are marked with quotes, either single or double:
+
+```{python error=TRUE}
+"Hello world #1!"
+5 + '6'
+type('6')
+```
+
+```{r error=TRUE}
+"Hello world #1!"
+5 + '6'
+class('6')
+```
+
+You can combine strings to produce longer strings. This is done with the function `paste()` in R and using the `+` operator in Python (as long as all parts are strings).
+
+```{python}
+WorldNr = 2
+"Hello world #" + str(WorldNr) + "!"
+```
+
+```{r}
+WorldNr = 2
+paste("Hello world #", WorldNr, "!", sep="") # The 'sep' argument avoids adding spaces in between
+```
+
+A variable can also hold multiple values of a particular data type, or even mix data types. Python supports associative arrays, called dictionaries, that are created using curly braces:
+
+```{python}
+WUR = {"name": "Wageningen University", "x": 5.7, "y": 52}
+type(WUR)
+WUR["x"]
+type(WUR["x"])
+```
+
+The dictionary type allows naming its elements and accessing them by name. The elements can be of any type.
+
+Both R and Python support lists, which allow combining any data types into one variable. In Python they are created using square brackets, and in R using `list()`:
+
+```{python}
+WUR = ["Wageningen University", 5.7, 52]
+```
+
+```{r}
+WUR = list("Wageningen University", 5.7, 52)
+```
+
+Elements of a list are sequential and can be accessed by slicing the list using a number (index) in square brackets. An important difference between the two languages is that R starts counting from 1, but Python starts counting from 0! This is similar to how in different countries, floors of buildings are counted starting from 1 or from 0. Netherlands is a "Python" style country where the ground floor is number 0, whereas Canada is an "R" style country where the ground floor is number 1. The R style has the advantage of the index matching the element number, i.e. `[2]` will give you the second element, where in Python the second element is `[1]`:
+
+```{python}
+WUR[1]
+```
+
+```{r}
+WUR[2]
+```
+
+There is also a difference in what happens if you use a negative index. Python uses negative indices to wrap around, so `[-1]` means "last element", whereas in R it stands for exclusion, so `[-1]` means "all elements except for the first one":
+
+```{python}
+WUR[-1]
+```
+
+```{r}
+WUR[-1]
+```
+
+What is the equivalent of a dictionary in R? It's a named list! When creating a list, you can specify a name of each element, and then slice the list using names. Unlike the colon `:` used in Python for dictionaries, R simply uses the equal sign `=`:
+
+```{r}
+WUR = list("name"="Wageningen University", "x"=5.7, "y"=52)
+class(WUR)
+WUR["x"]
+class(WUR["x"])
+```
+
+Here we can see another difference in how R and Python deal with lists. In R, a list always consists of lists, recursively. Each element of a list is always a list itself. To obtain the value, we need to access it using the double square bracket operator:
+
+```{r}
+WUR[["x"]]
+class(WUR[["x"]])
+```
+
+There are several data types that are specific to R, though there are Python packages that implement equivalent functionality as well. The most basic type is a vector, which can hold multiple values of the same type. An extension of a vector is a matrix, that has two dimensions. Adding further dimensions, we get an array. A matrix is a special case of an array (two-dimensional), as is a vector (one-dimensional array).
+
+In R, almost everything appears as a vector. That is why in the R print output above you can see `[1]` next to most output, indicating that the value is just the first in a 1-length vector. To make longer vectors, the function `c()` (for **c**oncatenate) is used:
+
+```{r}
+WURcoords = c(5.7, 52)
+WURcoords
+class(WURcoords)
+```
+
+Matrices are made using the function `matrix` by combining multiple vectors:
+
+```{r}
+# `nrow` specifies how many rows the matrix will have
+LocMat = matrix(c(WURcoords, WURcoords + 1), nrow = 2)
+LocMat
+class(LocMat)
+```
+
+And arrays of higher order are likewise created using `array()`:
+
+```{r}
+# Here "dim" defines the shape, i.e. number of rows, columns, layers, etc.
+LocArray = array(c(LocMat, LocMat+1), dim=c(2,2,2))
+LocArray
+class(LocArray)
+```
+
+Base Python can only achieve a similar effect using nested lists:
+```{python}
+WURcoords = [5.7, 52]
+WURcoords
+LocMat = [WURcoords, WURcoords]
+LocMat
+LocArray = [LocMat, LocMat]
+LocArray
+```
+
+Here we can also notice that R can perform vectorised arithmetics: `WURcoords + 1` added 1 to each value of the vector `WURcoords`, and `LocMat + 1` added 1 to each value of the matrix `LocMat`. Core Python does not allow doing so without writing a loop. However, since arrays and vectorised arithmetics are very useful, it has all been implemented in the package `NumPy`, which is now considered to be an essntial package in Python:
+
+```{python}
+import numpy
+
+npWURcoords = numpy.array(WURcoords)
+npWURcoords
+type(npWURcoords)
+
+npLocMat = numpy.array([npWURcoords, npWURcoords + 1])
+npLocMat
+type(npLocMat)
+
+npLocArray = numpy.array([npLocMat, npLocMat + 1])
+npLocArray
+type(npLocArray)
+```
+
+Another useful data type in R is Data Frames. A Data Frame is a table, similar to a matrix, but with one key difference: while matrices require all values to be of the same type, a data.frame only requires each column to have a consistent type. The Data Frame concept comes from R's statistical background, where it is useful to have multiple variables that are being studied, as columns, and multiple records or observations of those values, as rows. For example:
+
+```{r}
+WURbuildings = data.frame(name = c("Gaia", "Aurora"), x = c(5.665, 5.657), y = c(51.987, 51.982))
+WURbuildings
+class(WURbuildings)
+```
+
+To know the type of each column, we can use the function `str` (structure):
+```{r}
+str(WURbuildings)
+```
+
+We see here that the `name` column is made of character strings, whereas `x` and `y` columns are floating point numbers. The Data Frame gives more structure than a plain list does, ensuring that the data has rows and columns and that the column types are consistent.
+
+In Python, Data Frames are implemented in the package `pandas`:
+
+```{python}
+import pandas
+WURbuildings = pandas.DataFrame({"name": ["Gaia", "Aurora"],  "x": [5.665, 5.657], "y": [51.987, 51.982]})
+WURbuildings
+type(WURbuildings)
+WURbuildings.dtypes
+```
+
+The `.dtypes` accessor is equivalent to `str()` in R, though you can see one difference: the strings are reported as "objects".
