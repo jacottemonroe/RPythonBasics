@@ -269,3 +269,56 @@ WURbuildings.dtypes
 ```
 
 The `.dtypes` accessor is equivalent to `str()` in R, though you can see one difference: the strings are reported as "objects".
+
+## Slicing and accessors
+
+When dealing with variables that hold multiple values, we often need to select some smaller subset of those values. This is called *slicing* an array. It is done using operators that are called *accessors*. We used three of them in the examples above: `[]` (both languages), `[[]]` (R) and `.` (Python). These are the main accessors, though there are a few others that the languages support.
+
+The `[]` accessor accepts indices of values to select. As we saw earlier, the indices can also be negative, or a combination of positive and negative. Both R and Python have a way to quickly create ranges for slicing arrays, using the `:` operator, but there are some differences in how the ranges behave:
+
+```{r}
+Buildings = c("Gaia", "Lumen", "Forum", "Orion", "Aurora", "Atlas")
+Buildings[2:4] # We get the second, third and fourth elements
+```
+
+```{python}
+Buildings = ["Gaia", "Lumen", "Forum", "Orion", "Aurora", "Atlas"]
+Buildings[2:4] # We get the third and fourth elements
+```
+
+As we can see, slicing in R is inclusive, i.e. any number you mention will be included in the resulting slice. In Python, it is one-sided: the fist number of the range will be included, but the last number will be excluded. And, of course, Python counts from 0 whereas R counts from 1.
+
+Let's try to slice the first half and the second half of the string array in both lanaguages:
+```{r}
+Buildings[1:3]
+Buildings[4:6]
+```
+
+```{python}
+Buildings[:3] # The fourth element is not included
+Buildings[3:] # It is included here
+```
+
+As you see, Python interprets a missing number as the first and the last element of the array. R does not, and requires you to enter `1` for the first element and `length(YourArray)` for the last one.
+
+When slicing two-dimensional arrays (matrices or data frames), two indices are used, separated by a comma, in the order `[row, column]`:
+
+```{r}
+LocMat
+LocMat[2, 1] # Get y coordinate of WUR campus
+```
+
+```{python}
+npLocMat
+npLocMat[0, 1] # Get y coordinate of WUR campus
+```
+
+If you want to select the whole row/column, without manually specifying the size of your array, in Python you can use `:`, and in R you can omit the index:
+
+```{r}
+LocMat[, 1] # Get both coordinates of WUR campus
+```
+
+```{python}
+npLocMat[0, :] # Get both coordinates of WUR campus
+```
