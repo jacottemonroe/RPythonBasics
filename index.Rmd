@@ -299,7 +299,7 @@ Buildings[:3] # The fourth element is not included
 Buildings[3:] # It is included here
 ```
 
-As you see, Python interprets a missing number as the first and the last element of the array. R does not, and requires you to enter `1` for the first element and `length(YourArray)` for the last one.
+As you see, Python interprets a missing number as the first and the last element of the array. R does not, and requires you to enter `1` for the first element and `length(YourArray)` (e.g. `length(Buildings)`) for the last one.
 
 When slicing two-dimensional arrays (matrices or data frames), two indices are used, separated by a comma, in the order `[row, column]`:
 
@@ -321,4 +321,188 @@ LocMat[, 1] # Get both coordinates of WUR campus
 
 ```{python}
 npLocMat[0, :] # Get both coordinates of WUR campus
+```
+
+Likewise, if we have an array with more dimensions, we can specify more indices (e.g. a three-dimensional array will accept three indices, `x`, `y`, `z`).
+
+Previously we saw another accessor in R, namely, the `[[]]` accessor. It is a list accessor, and generally is used to directly access a value, treating the variable as a list. The accessor accepts numbers and character strings as input. Another accessor popular in R is the `$` accessor, which allows accessing values by name. The `$` accessor is generally equivalent to the `[[]]` accessor with a string input. Here's an example of how these work with data frames:
+
+```{r}
+WURbuildings
+WURbuildings[1] # When accessed using a single number, it selects a column
+class(WURbuildings[1]) # Single-column data.frame
+WURbuildings[[1]] # Also selects a column
+class(WURbuildings[[1]]) # But now the result is a vector!
+WURbuildings[["name"]] # Column by name
+WURbuildings$name # Same
+```
+
+Generally the `$` accessor is not recommended, because it does not allow the use of variables, it only works with literal strings.
+
+Note that in Python, the operator `[[]]` has a very different meaning: the outer `[]` is the accessor, and the inner `[]` is a list constructor, in other words, it's equivalent to the R `[c()]`:
+
+```{python}
+npLocArray = numpy.array([npLocMat, npLocMat + 1, npLocMat + 2, npLocMat + 3])
+npLocArray
+npLocArray[0,1] # Meaning "first layer, second row, all columns"
+npLocArray[[0,2]] # Meaning "first and third layers, all rows and all columns"
+```
+
+Similar to the R `$` accessor, Python has the accessor `.` to select by literal string:
+
+```{python}
+WURbuildings
+WURbuildings["name"]
+WURbuildings.name
+```
+
+Instead of supplying numbers or strings, we can also slice by using a boolean array of the same dimensions as what we are trying to slice. This is very handy, as we can make use of this to select by a rule:
+
+```{r}
+LocMat
+LocMat[LocMat > 50] # Get only the values above 50
+```
+
+What happens here is that the inner part of the accessor generates a boolean array, which is subsequently used for slicing, as if it was a mask:
+
+```{r}
+LocMat > 50
+```
+
+The same applies in NumPy:
+
+```{python}
+npLocMat
+npLocMat[npLocMat > 50]
+```
+
+## Objects and inheritance
+
+Both R and Python are object-oriented languages, and in this tutorial we have already worked with many objects. For example, data frames, lists and matrices are objects, and the `class()` or `type()` function prints what type of object it is, in other words, what is the class of the object. In R, `str()` allows investigating the structure of an object. Python does not have a unified function for this and different packages implement this functionality differently, if at all.
+
+```{r}
+WUR = list("name"="Wageningen University", "x"=5.7, "y"=52)
+str(WUR) # Show the structure of a list
+WURbuildings
+str(WURbuildings) # Show the structure of a data frame (which is also a type of list)
+```
+
+```{python}
+WURbuildings # pandas data frame
+WURbuildings.dtypes # Shows data types
+vars(WURbuildings) # More generic, but does not work with lists and dicts
+dir(WURbuildings) # All of the methods contained in the object
+```
+
+In the last example we can see that objects can contain other objects and/or functions. A class is a definition of an object, and a function contained inside an object is traditionally called a method.
+
+R and Python both support classes and objects, but their philosophy regarding them differs significantly. R is very lax and allows the users to freely (re)define object classes as they see fit. Python is a lot more formal and requires a formal class definition to define an object class. Python prefers self-contained objects that contain all the methods that can interact with the object embedded inside the object. In contrast, the R philosophy is to define global functions whose behaviour is different depending on the class the function is run on.
+
+As an example, we might want to define a class `building` which, when instantiated as an object, will contain a `name`, and a vector `coordinates`. We want to also have a function that prints these attributes in a nice to read way. This is how it would be done in R:
+
+```{r}
+Gaia = list("name"="Gaia", "coordinates"=c("x"=5.665, "y"=51.987))
+class(Gaia) # It is a list
+class(Gaia) = "building" # And now it's a `building`!
+class(Gaia)
+Aurora = list("name"="Aurora", "coordinates"=c("x"=5.657, "y"=51.982))
+class(Aurora) = "building"
+class(Aurora)
+
+# Define a function to print buildings
+print.building = function(x)
+{
+  print(paste(x[["name"]], "is a building that is located at x:",
+    x[["coordinates"]]["x"], "y:", x[["coordinates"]]["y"]))
+}
+# Now we simply use print() and get our custom output:
+print(Gaia)
+print(Aurora)
+```
+
+The reason why this works is because R uses the concept of function signatures. When running `print()`, R will first check what is the class of the object you are calling the function on, and checks if there is a function defined that is called `print.class` (in our case `print.building`). On a match, it will run that function instead of the `print.default` function.
+
+In Python, we need to formally define a class and then instantiate it:
+```{python}
+class building:
+  def __init__(self, name, coordinates):
+    self.name = name
+    self.coordinates = coordinates
+
+  def print(self):
+    print(self.name + " is a building that is located at x: "
+      + str(self.coordinates["x"]) + " y: " + str(self.coordinates["y"]))
+
+# Instantiate the class by calling it as if it was its __init__ function
+Gaia = building(name="Gaia", coordinates={"x": 5.665, "y": 51.987})
+Aurora = building(name="Aurora", coordinates={"x": 5.657, "y": 51.982})
+type(Gaia)
+type(Aurora)
+Gaia.print()
+Aurora.print()
+```
+
+Note that we called the method `print()` that is inside our object, not the global function `print()`, which would give a different output:
+
+```{python}
+print(Gaia)
+print(Aurora)
+```
+
+A key concept in object-oriented programming is inheritance: a class can inherit properties and methods of its parent class. This allows us to make extensions of existing classes without having to duplicate a lot of work. Let's say we want to extend our `building` class with an attribute `purpose`, calling the new child class `purposeBuilding`. In R, inheritance works by making an object part of multiple classes:
+
+```{r}
+GaiaPurpose = list("name"="Gaia", "coordinates"=c("x"=5.665, "y"=51.987), purpose="office")
+class(GaiaPurpose) = c("purposeBuilding", "building")
+print(GaiaPurpose) # We reuse the parent class `print()`
+
+AuroraPurpose = list("name"="Aurora", "coordinates"=c("x"=5.657, "y"=51.982), purpose="education")
+class(AuroraPurpose) = c("purposeBuilding", "building")
+print(AuroraPurpose)
+
+# Make a custom print function for purposeBuilding
+print.purposeBuilding = function(x)
+{
+  print(paste(x[["name"]], "is an", x[["purpose"]], "building that is located at x:",
+    x[["coordinates"]]["x"], "y:", x[["coordinates"]]["y"]))
+}
+
+print(GaiaPurpose)
+print(AuroraPurpose)
+```
+
+In Python, inheritance is also formally declared in the definition of the new class:
+```{python}
+class purposeBuilding(building):
+  def __init__(self, name, coordinates, purpose):
+    super().__init__(name, coordinates) # Let the parent class handle these
+    self.purpose = purpose
+
+Gaia = purposeBuilding(name="Gaia", coordinates={"x": 5.665, "y": 51.987}, purpose="office")
+Aurora = purposeBuilding(name="Aurora", coordinates={"x": 5.657, "y": 51.982}, purpose="eduction")
+Gaia.print()
+Aurora.print()
+```
+
+We can override methods by redeclaring them, but any instantiated objects will have to be reinstantiated for the changes to apply:
+
+```{python}
+# Let's also override the print now:
+class purposeBuilding(building):
+  def __init__(self, name, coordinates, purpose):
+    super().__init__(name, coordinates) # Let the parent class handle these
+    self.purpose = purpose
+
+  def print(self):
+    print(self.name + " is an " + self.purpose + " building that is located at x: "
+      + str(self.coordinates["x"]) + " y: " + str(self.coordinates["y"]))
+
+# If we don't reinstantiate, the old definition applies:
+Gaia.print()
+Aurora.print()
+
+Gaia = purposeBuilding(name="Gaia", coordinates={"x": 5.665, "y": 51.987}, purpose="office")
+Aurora = purposeBuilding(name="Aurora", coordinates={"x": 5.657, "y": 51.982}, purpose="eduction")
+Gaia.print()
+Aurora.print()
 ```
