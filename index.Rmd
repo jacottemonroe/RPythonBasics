@@ -506,3 +506,85 @@ Aurora = purposeBuilding(name="Aurora", coordinates={"x": 5.657, "y": 51.982}, p
 Gaia.print()
 Aurora.print()
 ```
+
+Note that R also has a more formalised type of classes, called S4 classes, that behave a bit more similar to the Python classes, but S4 classes are generally not recommended to use as they are further away from the R philosophy.
+
+## Scope and side effects
+
+Another difference between R and Python you may also have noticed in the examples above: R uses curly braces `{}` to denote scope, whereas Python uses a colon `:` and enforces whitespace. As an example:
+
+```{python}
+def scope():
+  print("I am inside the scope of the function scope()!")
+  print("I am also inside the scope of the function scope()!")
+print("I am outside the scope of the function scope()!")
+
+scope()
+```
+
+```{r}
+scope = function() {
+  print("I am inside the scope of the function scope()!")
+  print("I am also inside the scope of the function scope()!")
+}
+  print("I am outside the scope of the function scope()!")
+
+scope()
+```
+
+In addition, in R, typically anything that happens inside of a function scope stays in the function, i.e. it does not alter the global state.
+
+```{r}
+location = "Gaia"
+move = function(where)
+{
+  location = where
+  print(paste("Moved to", location))
+}
+
+move("Aurora")
+print(location)
+```
+
+In Python it is also often true, but the list of exceptions is much longer.
+
+```{python}
+location = "Gaia"
+def move(where):
+  location = where
+  print("Moved to " + location)
+
+move("Aurora")
+print(location)
+```
+
+For instance, lists are mutable even outside of the function scope:
+
+```{python}
+locations = ["Gaia"]
+def addLocation(where):
+  locations.append(where)
+  print(locations)
+
+addLocation("Aurora")
+print(locations)
+```
+
+Such mutability that goes outside of the function scope is called a side effect. They are best avoided as much as possible, as it brings confusion to the users (and may even destroy their work)! Normally, you expect that if you as a user run a function, it will process your argeuments and return a new, processed object, but will not change your global environment, or the obect that you passed to the function itself.
+
+To avoid such side effects, in Python we need to explicitly copy mutable objects:
+
+```{python}
+locations = ["Gaia"]
+def addLocation(where):
+  result = locations.copy()
+  result.append(where)
+  print(result)
+
+addLocation("Aurora")
+print(locations)
+```
+
+## Summary
+
+We have looked at some similarities and differences between R and Python. As you can see, the same or similar functionality is available in both languages, but the philosophies of the languages are sometimes different, so it is important to be aware of them. We will make extensive use of the basics in the upcoming tutorials, and will build further upon them to specifically handle spatial data. We will first go through the specifics of R, then the specifics of Python, but it's good to keep in mind throughout the course that both languages can do what we want, just in a slightly different way. You can use this tutorial as a reference for the basics if you get stuck in future tutorials. Calling R and Python from Bash can also be a very useful technique to combine them during the project at the end of the course.
