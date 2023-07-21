@@ -976,12 +976,12 @@ same tasks. Both are relatively easy to integrate with other software as
 well, which allows extending the capabilities of each language. For
 example, the open source GIS software QGIS, including all its plugins,
 are written in Python. R scripts can be run directly from the QGIS
-inteface as processing tools. R has a package <code>reticulate</code>
+interface as processing tools. R has a package <code>reticulate</code>
 that can run Python scripts, and Python has a package <code>rpy2</code>
 that can run R scripts.</p>
 <p>Both R and Python have extremely active communities maintaining a
 wealth of packages. The package ecosystems differ significantly between
-the two langauges, however. Python packages are hosted on PyPI, the
+the two languages, however. Python packages are hosted on PyPI, the
 Python Package Index, which is a very easily accessible place where
 anyone can upload the Python packages they create. There is minimal
 oversight over them and the package authors are free to do with their
@@ -1016,7 +1016,7 @@ rasters often need to be converted into number matrices for processing,
 then converted back into raster objects, by the user.</p>
 <p>Both R and Python can plot geospatial data and have several
 frameworks and packages for that. R has a built-in <code>plot()</code>
-function that can visualise any type of data quickly, and all pacakges
+function that can visualise any type of data quickly, and all packages
 make use of it. For more advanced custom visualisation,
 <code>ggplot2</code> can be used. In Python, the standard plotting
 package is <code>matplotlib</code>. Spatial packages often implement
@@ -1243,8 +1243,8 @@ multiple vectors:</p>
 value of the matrix <code>LocMat</code>. Core Python does not allow
 doing so without writing a loop. However, since arrays and vectorised
 arithmetics are very useful, it has all been implemented in the package
-<code>NumPy</code>, which is now considered to be an essntial package in
-Python:</p>
+<code>NumPy</code>, which is now considered to be an essential package
+in Python:</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy</span>
 <span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>npWURcoords <span class="op">=</span> numpy.array(WURcoords)</span>
@@ -1338,7 +1338,7 @@ fist number of the range will be included, but the last number will be
 excluded. And, of course, Python counts from 0 whereas R counts from
 1.</p>
 <p>Let’s try to slice the first half and the second half of the string
-array in both lanaguages:</p>
+array in both languages:</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>Buildings[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;Gaia&quot;  &quot;Lumen&quot; &quot;Forum&quot;</code></pre>
 <div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>Buildings[<span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>]</span></code></pre></div>
@@ -1579,9 +1579,9 @@ it:</p>
 our object, not the global function <code>print()</code>, which would
 give a different output:</p>
 <div class="sourceCode" id="cb205"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Gaia)</span></code></pre></div>
-<pre><code>## &lt;__main__.building object at 0x7f1b1b3b29b0&gt;</code></pre>
+<pre><code>## &lt;__main__.building object at 0x7fbb8b2b29b0&gt;</code></pre>
 <div class="sourceCode" id="cb207"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Aurora)</span></code></pre></div>
-<pre><code>## &lt;__main__.building object at 0x7f1b1b3b2a20&gt;</code></pre>
+<pre><code>## &lt;__main__.building object at 0x7fbb8b2b2a20&gt;</code></pre>
 <p>A key concept in object-oriented programming is inheritance: a class
 can inherit properties and methods of its parent class. This allows us
 to make extensions of existing classes without having to duplicate a lot
@@ -1616,7 +1616,7 @@ the new class:</p>
 <span id="cb217-4"><a href="#cb217-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.purpose <span class="op">=</span> purpose</span>
 <span id="cb217-5"><a href="#cb217-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb217-6"><a href="#cb217-6" aria-hidden="true" tabindex="-1"></a>Gaia <span class="op">=</span> purposeBuilding(name<span class="op">=</span><span class="st">&quot;Gaia&quot;</span>, coordinates<span class="op">=</span>{<span class="st">&quot;x&quot;</span>: <span class="fl">5.665</span>, <span class="st">&quot;y&quot;</span>: <span class="fl">51.987</span>}, purpose<span class="op">=</span><span class="st">&quot;office&quot;</span>)</span>
-<span id="cb217-7"><a href="#cb217-7" aria-hidden="true" tabindex="-1"></a>Aurora <span class="op">=</span> purposeBuilding(name<span class="op">=</span><span class="st">&quot;Aurora&quot;</span>, coordinates<span class="op">=</span>{<span class="st">&quot;x&quot;</span>: <span class="fl">5.657</span>, <span class="st">&quot;y&quot;</span>: <span class="fl">51.982</span>}, purpose<span class="op">=</span><span class="st">&quot;eduction&quot;</span>)</span>
+<span id="cb217-7"><a href="#cb217-7" aria-hidden="true" tabindex="-1"></a>Aurora <span class="op">=</span> purposeBuilding(name<span class="op">=</span><span class="st">&quot;Aurora&quot;</span>, coordinates<span class="op">=</span>{<span class="st">&quot;x&quot;</span>: <span class="fl">5.657</span>, <span class="st">&quot;y&quot;</span>: <span class="fl">51.982</span>}, purpose<span class="op">=</span><span class="st">&quot;education&quot;</span>)</span>
 <span id="cb217-8"><a href="#cb217-8" aria-hidden="true" tabindex="-1"></a>Gaia.<span class="bu">print</span>()</span></code></pre></div>
 <pre><code>## Gaia is a building that is located at x: 5.665 y: 51.987</code></pre>
 <div class="sourceCode" id="cb219"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb219-1"><a href="#cb219-1" aria-hidden="true" tabindex="-1"></a>Aurora.<span class="bu">print</span>()</span></code></pre></div>
@@ -1639,11 +1639,11 @@ objects will have to be reinstantiated for the changes to apply:</p>
 <div class="sourceCode" id="cb223"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a>Aurora.<span class="bu">print</span>()</span></code></pre></div>
 <pre><code>## Aurora is a building that is located at x: 5.657 y: 51.982</code></pre>
 <div class="sourceCode" id="cb225"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a>Gaia <span class="op">=</span> purposeBuilding(name<span class="op">=</span><span class="st">&quot;Gaia&quot;</span>, coordinates<span class="op">=</span>{<span class="st">&quot;x&quot;</span>: <span class="fl">5.665</span>, <span class="st">&quot;y&quot;</span>: <span class="fl">51.987</span>}, purpose<span class="op">=</span><span class="st">&quot;office&quot;</span>)</span>
-<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a>Aurora <span class="op">=</span> purposeBuilding(name<span class="op">=</span><span class="st">&quot;Aurora&quot;</span>, coordinates<span class="op">=</span>{<span class="st">&quot;x&quot;</span>: <span class="fl">5.657</span>, <span class="st">&quot;y&quot;</span>: <span class="fl">51.982</span>}, purpose<span class="op">=</span><span class="st">&quot;eduction&quot;</span>)</span>
+<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a>Aurora <span class="op">=</span> purposeBuilding(name<span class="op">=</span><span class="st">&quot;Aurora&quot;</span>, coordinates<span class="op">=</span>{<span class="st">&quot;x&quot;</span>: <span class="fl">5.657</span>, <span class="st">&quot;y&quot;</span>: <span class="fl">51.982</span>}, purpose<span class="op">=</span><span class="st">&quot;education&quot;</span>)</span>
 <span id="cb225-3"><a href="#cb225-3" aria-hidden="true" tabindex="-1"></a>Gaia.<span class="bu">print</span>()</span></code></pre></div>
 <pre><code>## Gaia is an office building that is located at x: 5.665 y: 51.987</code></pre>
 <div class="sourceCode" id="cb227"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb227-1"><a href="#cb227-1" aria-hidden="true" tabindex="-1"></a>Aurora.<span class="bu">print</span>()</span></code></pre></div>
-<pre><code>## Aurora is an eduction building that is located at x: 5.657 y: 51.982</code></pre>
+<pre><code>## Aurora is an education building that is located at x: 5.657 y: 51.982</code></pre>
 <p>Note that R also has a more formalised type of classes, called S4
 classes, that behave a bit more similar to the Python classes, but S4
 classes are generally not recommended to use as they are further away
@@ -1712,8 +1712,8 @@ scope:</p>
 side effect. They are best avoided as much as possible, as it brings
 confusion to the users (and may even destroy their work)! Normally, you
 expect that if you as a user run a function, it will process your
-argeuments and return a new, processed object, but will not change your
-global environment, or the obect that you passed to the function
+arguments and return a new, processed object, but will not change your
+global environment, or the object that you passed to the function
 itself.</p>
 <p>To avoid such side effects, in Python we need to explicitly copy
 mutable objects:</p>
