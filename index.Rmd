@@ -57,7 +57,7 @@ Ultimately, the choice of language to use is often decided by interoperability n
 
 ## Running Python and R from Bash
 
-Both the `R` and the `python` interpreters can be run from Bash. Here is an example of code that is correct in both python and R. You can use this example to execute a script written in either language:
+Both the `R` and the `python` interpreters can be run from Bash. Here is an example of code that is correct in both Python and R. You can use this example to execute a script written in either language:
 ```{bash}
 # Create a script file "script" (no extension)
 echo "print('Hello world!')" > script
@@ -67,7 +67,7 @@ Rscript ./script
 python3 ./script
 ```
 
-This allows you to run script files even without having any graphical user interface installed or running, which is the fastest way to run any script from top to bottom. You can use this method to try out the code examples below, or use your favorite integrated development environment (IDE), such as RStudio or RKWard for R and Spyder or Jupyter for Python.
+This allows you to run script files even without having any graphical user interface installed or running, which is the fastest way to run any script from top to bottom. You can use this method to try out the code examples below, or use your favourite integrated development environment (IDE), such as RStudio or RKWard for R and Spyder or Jupyter for Python.
 
 ## Data types
 
@@ -118,7 +118,7 @@ type('6')
 class('6')
 ```
 
-You can combine strings to produce longer strings. This is done with the function `paste()` in R and using the `+` operator in Python (as long as all parts are strings). 
+You can combine strings to produce longer strings. This is done with the function `paste()` in R and using the `+` operator in Python (as long as all parts are strings).
 
 ```{python}
 WorldNr = 2
@@ -438,7 +438,7 @@ class building:
 
   def print(self):
     # Note that we use "string formatting". If a "f" is put before a string quote, 
-    # all text inside curly brackets will be executed as plain python. 
+    # all text inside curly brackets will be executed as plain Python 
     print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]})  
 
 # Instantiate the class by calling it as if it was its __init__ function
@@ -515,7 +515,7 @@ Gaia.print()
 Aurora.print()
 ```
 
-Note that R also has a more formalized type of classes, called S4 classes, that behave a bit more similar to the Python classes, but S4 classes are generally not recommended to use as they are further away from the R philosophy.
+Note that R also has a more formalised type of classes, called S4 classes, that behave a bit more similar to the Python classes, but S4 classes are generally not recommended to use as they are further away from the R philosophy.
 
 ## Scope and side effects
 
