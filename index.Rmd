@@ -41,15 +41,15 @@ In this tutorial, you will learn to:
 
 If you ask an average person what Python is, they will tell you that it's a type of snake. If you ask an average person what R is, they will tell you that it's a letter of the alphabet. Today you will learn beyond that: the details of the programming languages of R and Python!
 
-Both R and Python programming languages were created at around the same time: Python was created in 1991, and R in 1993. However, R actually has a much longer history, because it is an extension of the S programming language that was created all the way back in 1976 in Bell Labs. R was created specifically as a statistical package, similar to SPSS or Stata. However, it has since evolved into a general-purpose programming language. Due to its focus on statistics, R is mainly used in academia (schools and universities).
+Both R and Python programming languages were created at around the same time: Python was created in 1991 in the Netherlands, and R in 1993. However, R actually has a much longer history, because it is an extension of the S programming language that was created all the way back in 1976 in Bell Labs. R was created specifically as a statistical package, similar to SPSS or Stata. However, it has since evolved into a general-purpose programming language. Due to its focus on statistics, R is mainly used in academia (schools and universities).
 
-Python was created as a general-purpose programming language. It was designed with readability in mind, and it has become the most popular programming language in the world. Python is therefore widely used in the industry, such as startups and large corporations. Python is especially strong in the field of deep learning, since packages such as Google's TensorFlow are implemented primarily in Python.
+Python was created as a general-purpose programming language. It was designed with readability in mind, and it has become the most popular programming language in the world. Python is therefore widely used in the industry, such as startups and large corporations. Python is especially strong in the field of deep learning, since packages such as Google's TensorFlow are implemented primarily in Python. Additionally, because of it's popularity, it is very easy to find online examples and it is used often to communicate with other software.  
 
 In terms of spatial data handling, both R and Python can perform the same tasks. Both are relatively easy to integrate with other software as well, which allows extending the capabilities of each language. For example, the open source GIS software QGIS, including all its plugins, are written in Python. R scripts can be run directly from the QGIS interface as processing tools. R has a package `reticulate` that can run Python scripts, and Python has a package `rpy2` that can run R scripts.
 
 Both R and Python have extremely active communities maintaining a wealth of packages. The package ecosystems differ significantly between the two languages, however. Python packages are hosted on PyPI, the Python Package Index, which is a very easily accessible place where anyone can upload the Python packages they create. There is minimal oversight over them and the package authors are free to do with their packages what they please. The R package repository is called CRAN, the Comprehensive R Archive Network. CRAN is curated: any package submitted to CRAN goes through a review process, and has to pass a suite of tests before it gets accepted. This ensures that, among other things, every argument in every function in every package is documented, and that each package is compatible with all the other packages in CRAN. The result is that it is much more difficult to publish R packages, but the quality of R packages is generally much higher than Python packages. It also means that package management in R is very easy, as no conflicts can happen between packages. Packages are also more inclined to depend on other packages, as it is more certain that their dependencies will stay maintained. In contrast, Python has a lot more packages, but they are often poorly documented and often do not interoperate with other packages as well. Package management is a big issue in Python, as many packages work only with certain versions of other packages.
 
-In practice, this means that while all geospatial data handling tasks can be done in R or Python, R is better integrated for this. In this course you will learn about the packages `terra` for raster handling and `sf` for vector handling, which are both integrated with each other and offer a full suite of processing tools, and all of the other packages that use vectors or rasters in R also make use of `sf` and `terra` package objects. In Python, raster reading is done using the `rasterio` package, but processing needs to be done using other packages, many of which do not support `rasterio` objects. Vector handling is done in `geopandas`, which has spatial processing tools, but once again they are not always integrated with raster object support. So rasters often need to be converted into number matrices for processing, then converted back into raster objects, by the user.
+In practice, this means that while all geospatial data handling tasks can be done in R or Python, R is better integrated for this. In this course you will learn about the packages `terra` for raster handling and `sf` for vector handling, which are both integrated with each other and offer a full suite of processing tools, and all of the other packages that use vectors or rasters in R also make use of `sf` and `terra` package objects. In Python, raster reading is done using the `rasterio` package, but processing needs to be done using other packages, many of which do not support `rasterio` objects. Vector handling is done in for example `geopandas`, which has spatial processing tools, but once again they are not always integrated with raster object support. So rasters often need to be converted into number matrices for processing, then converted back into raster objects, by the user.
 
 Both R and Python can plot geospatial data and have several frameworks and packages for that. R has a built-in `plot()` function that can visualise any type of data quickly, and all packages make use of it. For more advanced custom visualisation, `ggplot2` can be used. In Python, the standard plotting package is `matplotlib`. Spatial packages often implement their own plotting functions for their own objects, therefore putting multiple objects into one plot can often be more challenging than in R.
 
@@ -57,7 +57,7 @@ Ultimately, the choice of language to use is often decided by interoperability n
 
 ## Running Python and R from Bash
 
-Both the `R` and the `python` interpreters can be run from Bash. Here is an example you can use to execute a script written in either language:
+Both the `R` and the `python` interpreters can be run from Bash. Here is an example of code that is correct in both Python and R. You can use this example to execute a script written in either language:
 ```{bash}
 # Create a script file "script" (no extension)
 echo "print('Hello world!')" > script
@@ -128,6 +128,12 @@ WorldNr = 2
 ```{r}
 WorldNr = 2
 paste("Hello world #", WorldNr, "!", sep="") # The 'sep' argument avoids adding spaces in between
+```
+
+Additionally, in Python, string formatting can be used, in for example a print function. To do this, we start a string with an `f` in front of the quote.
+```{python}
+WorldNr = 2
+print(f"Hello world # {WorldNr} !")
 ```
 
 A variable can also hold multiple values of a particular data type, or even mix data types. Python supports associative arrays, called dictionaries, that are created using curly braces:
@@ -410,6 +416,7 @@ class(Aurora) = "building"
 class(Aurora)
 
 # Define a function to print buildings
+# We use the "paste" function to format strings. 
 print.building = function(x)
 {
   print(paste(x[["name"]], "is a building that is located at x:",
@@ -430,8 +437,9 @@ class building:
     self.coordinates = coordinates
 
   def print(self):
-    print(self.name + " is a building that is located at x: "
-      + str(self.coordinates["x"]) + " y: " + str(self.coordinates["y"]))
+    # Note that we use "string formatting". If a "f" is put before a string quote, 
+    # all text inside curly brackets will be executed as plain Python 
+    print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]})  
 
 # Instantiate the class by calling it as if it was its __init__ function
 Gaia = building(name="Gaia", coordinates={"x": 5.665, "y": 51.987})
@@ -494,8 +502,8 @@ class purposeBuilding(building):
     self.purpose = purpose
 
   def print(self):
-    print(self.name + " is an " + self.purpose + " building that is located at x: "
-      + str(self.coordinates["x"]) + " y: " + str(self.coordinates["y"]))
+    print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]})  
+  
 
 # If we don't reinstantiate, the old definition applies:
 Gaia.print()
@@ -511,7 +519,7 @@ Note that R also has a more formalised type of classes, called S4 classes, that 
 
 ## Scope and side effects
 
-Another difference between R and Python you may also have noticed in the examples above: R uses curly braces `{}` to denote scope, whereas Python uses a colon `:` and enforces whitespace. As an example:
+Another difference between R and Python you may also have noticed in the examples above: R uses curly braces `{}` to denote scope, whereas Python uses a colon `:` and enforces indentation. As an example:
 
 ```{python}
 def scope():
