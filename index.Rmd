@@ -130,6 +130,10 @@ WorldNr = 2
 paste("Hello world #", WorldNr, "!", sep="") # The 'sep' argument avoids adding spaces in between
 ```
 
+```{block type="alert alert-info"}
+**Note** that Python uses `=` to define a new variable or to give it a new value, as was done above for the variable `WorldNr`. On the other hand, R typically uses `<-` to assign a value to a variable. However R also accepts `=`. In this tutorial, we use `=` for R to keep it simple, but you will find later tutorials using `<-`. Keep in mind that either option is valid as long as it is kept consistent throughout your code!
+```
+
 Additionally, in Python, string formatting can be used, in for example a print function. To do this, we start a string with an `f` in front of the quote.
 ```{python}
 WorldNr = 2
@@ -439,7 +443,7 @@ class building:
   def print(self):
     # Note that we use "string formatting". If a "f" is put before a string quote, 
     # all text inside curly brackets will be executed as plain Python 
-    print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]})  
+    print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]}')
 
 # Instantiate the class by calling it as if it was its __init__ function
 Gaia = building(name="Gaia", coordinates={"x": 5.665, "y": 51.987})
@@ -502,7 +506,7 @@ class purposeBuilding(building):
     self.purpose = purpose
 
   def print(self):
-    print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]})  
+    print(f'{self.name} is a building that is located at x: {self.coordinates["x"]}, y: {self.coordinates["y"]}')
   
 
 # If we don't reinstantiate, the old definition applies:
