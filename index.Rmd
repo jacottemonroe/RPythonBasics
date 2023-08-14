@@ -90,6 +90,10 @@ class(10.1)
 class(as.integer(10))
 ```
 
+```{block, type="alert alert-success"}
+> **Question 1**: What is the class of the sum 3+5 and of 3.0+5 in R and in Python? Write a sum of two numbers that returns an integer in R and in Python. 
+```
+
 Boolean, or logical, types can only have two values: true or false. When cast to an integer, true is represented by 1 and false is represented by 0. Both R and Python are case-sensitive, and use different cases to represent booleans (`True` in Python and `TRUE` in R).
 
 ```{python}
@@ -216,6 +220,10 @@ LocMat
 class(LocMat)
 ```
 
+```{block, type="alert alert-success"}
+> **Question 2**: Using the `c()` and `matrix()` functions, build a tic-tac-toe board with X's and O's in R. 
+```
+
 And arrays of higher order are likewise created using `array()`:
 
 ```{r}
@@ -251,6 +259,10 @@ type(npLocMat)
 npLocArray = numpy.array([npLocMat, npLocMat + 1])
 npLocArray
 type(npLocArray)
+```
+
+```{block, type="alert alert-success"}
+> **Question 3**: Make the same tic-tac-toe board as in question 2 in Python. Hint: You may wish to use numpy. 
 ```
 
 Another useful data type in R is Data Frames. A Data Frame is a table, similar to a matrix, but with one key difference: while matrices require all values to be of the same type, a data.frame only requires each column to have a consistent type. The Data Frame concept comes from R's statistical background, where it is useful to have multiple variables that are being studied, as columns, and multiple records or observations of those values, as rows. For example:
@@ -307,6 +319,10 @@ Buildings[4:6]
 ```{python}
 Buildings[:3] # The fourth element is not included
 Buildings[3:] # It is included here
+```
+
+```{block, type="alert alert-success"}
+> **Question 4**: Create a subset of Buildings with only Gaia and Aurora, using index slicing in R and Python. Hint: You may wish to use the functions `c()` and `numpy.array()`. 
 ```
 
 As you see, Python interprets a missing number as the first and the last element of the array. R does not, and requires you to enter `1` for the first element and `length(YourArray)` (e.g. `length(Buildings)`) for the last one.
@@ -384,6 +400,10 @@ The same applies in NumPy:
 ```{python}
 npLocMat
 npLocMat[npLocMat > 50]
+```
+
+```{block, type="alert alert-success"}
+> **Question 5**: In R and Python, slice `LocMat` to get an array containing only the values `5.7` and `53`. Hint: You can combine conditions by using `&` (AND) or `|` (OR). 
 ```
 
 ## Objects and inheritance
