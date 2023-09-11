@@ -403,7 +403,7 @@ npLocMat[npLocMat > 50]
 ```
 
 ```{block, type="alert alert-success"}
-> **Question 5**: In R and Python, slice `LocMat` to get an array containing only the values `5.7` and `53`. Hint: You can combine conditions by using `&` (AND) or `|` (OR). 
+> **Question 5**: In R and Python, slice `LocMat` to select all values below `6` and `52`. Hint: You can combine conditions by using `&` (AND) or `|` (OR).
 ```
 
 ## Objects and inheritance
